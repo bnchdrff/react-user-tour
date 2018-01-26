@@ -32,11 +32,16 @@ export default class ReactUserTour extends Component {
 		overridePos,
 		margin = 25,
 		horizontalOffset = 0,
-		verticalOffset = 0
+		verticalOffset = 0,
+		iframeSelector
 	) {
 		const windowHeight = window.innerHeight;
 		const windowWidth = window.innerWidth;
-		const el = document.querySelector(selector);
+		if (iframeSelector) {
+			const el = document.querySelector(iframeSelector).contentWindow.document.body.querySelector(selector);
+		} else {
+			const el = document.querySelector(selector);
+		}
 		if (el) {
 			let position = el ? el.getBoundingClientRect() : {};
 			const isElementBelowViewBox = viewBoxHelpers.isElementBelowViewBox(windowHeight, position.top);
@@ -144,7 +149,8 @@ export default class ReactUserTour extends Component {
 			currentTourStep.position,
 			currentTourStep.margin,
 			currentTourStep.horizontalOffset,
-			currentTourStep.verticalOffset
+			currentTourStep.verticalOffset,
+			currentTourStep.iframeSelector
 		);
 		const style = {...this.props.style};
 		const arrow = (
