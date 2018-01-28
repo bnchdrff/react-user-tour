@@ -51,8 +51,8 @@
   "author": "Social Tables",
   "license": "Apache-2.0",
   "dependencies": {
-    "react-motion": "^0.4.2",
-    "scroll-to": "0.0.2"
+    "@bnchdrff/scroll-to": "^0.0.2",
+    "react-motion": "^0.4.2"
   },
   "devDependencies": {
     "babel": "^6.3.26",

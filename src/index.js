@@ -44,11 +44,14 @@ export default class ReactUserTour extends Component {
 			let position = el ? el.getBoundingClientRect() : {};
 			const isElementBelowViewBox = viewBoxHelpers.isElementBelowViewBox(windowHeight, position.top);
 			const isElementAboveViewBox = viewBoxHelpers.isElementBelowViewBox(position.bottom);
+			const certainWindow = iframeSelector
+				? document.querySelector(iframeSelector).contentWindow
+				: window;
 			if (isElementBelowViewBox) {
-				position = scrollToPosition(el, position.bottom);
+				position = scrollToPosition(el, position.bottom, certainWindow);
 			}
 			else if (isElementAboveViewBox) {
-				position = scrollToPosition(el, window.pageYOffset + position.top);
+				position = scrollToPosition(el, window.pageYOffset + position.top, certainWindow);
 			}
 			const shouldPositionLeft = viewBoxHelpers.shouldPositionLeft(windowWidth, position.left);
 			const shouldPositionAbove = viewBoxHelpers.shouldPositionAbove(windowHeight, position.bottom);
