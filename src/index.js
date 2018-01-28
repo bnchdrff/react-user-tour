@@ -47,11 +47,12 @@ export default class ReactUserTour extends Component {
 			const certainWindow = iframeSelector
 				? document.querySelector(iframeSelector).contentWindow
 				: window;
+			// Add 100px on either end to help keep the target element away from screen edges
 			if (isElementBelowViewBox) {
-				position = scrollToPosition(el, position.bottom, certainWindow);
+				position = scrollToPosition(el, position.bottom - 100, certainWindow);
 			}
 			else if (isElementAboveViewBox) {
-				position = scrollToPosition(el, window.pageYOffset + position.top, certainWindow);
+				position = scrollToPosition(el, certainWindow.pageYOffset + position.top + 100, certainWindow);
 			}
 			const shouldPositionLeft = viewBoxHelpers.shouldPositionLeft(windowWidth, position.left);
 			const shouldPositionAbove = viewBoxHelpers.shouldPositionAbove(windowHeight, position.bottom);
@@ -109,6 +110,12 @@ export default class ReactUserTour extends Component {
 					position,
 					margin
 				});
+			}
+
+			if (iframeSelector) {
+				const { x, y } = document.querySelector(iframeSelector).getBoundingClientRect();
+				elPos.left += x;
+				elPos.top += y;
 			}
 
 			elPos.left += horizontalOffset;
@@ -174,7 +181,6 @@ export default class ReactUserTour extends Component {
 			this.props.step !== this.props.steps.length ?
 				<TourButton
 					onClick={() => this.props.onNext(this.props.step + 1)}
-					onTouchTap={() => this.props.onNext(this.props.step + 1)}
 					{...extraButtonProps}
 					className="react-user-tour-next-button">
 						{this.props.nextButtonText}
@@ -185,7 +191,6 @@ export default class ReactUserTour extends Component {
 			this.props.step !== 1 ?
 				<TourButton
 					onClick={() => this.props.onBack(this.props.step - 1)}
-					onTouchTap={() => this.props.onBack(this.props.step - 1)}
 					{...extraButtonProps}
 					className="react-user-tour-back-button">
 						{this.props.backButtonText}
@@ -196,7 +201,6 @@ export default class ReactUserTour extends Component {
 			this.props.step === this.props.steps.length ?
 				<TourButton
 					onClick={this.props.onCancel}
-					onTouchTap={this.props.onCancel}
 					{...extraButtonProps}
 					className="react-user-tour-done-button">
 						{this.props.doneButtonText}
@@ -223,8 +227,7 @@ export default class ReactUserTour extends Component {
 			!this.props.hideClose ?
 				<span className="react-user-tour-close"
 					style={xStyle}
-					onClick={this.props.onCancel}
-					onTouchTap={this.props.onCancel}>
+					onClick={this.props.onCancel}>
 						{this.props.closeButtonText}
 				</span> : ""
 		);
