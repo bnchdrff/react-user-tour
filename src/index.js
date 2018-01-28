@@ -37,11 +37,9 @@ export default class ReactUserTour extends Component {
 	) {
 		const windowHeight = window.innerHeight;
 		const windowWidth = window.innerWidth;
-		if (iframeSelector) {
-			const el = document.querySelector(iframeSelector).contentWindow.document.body.querySelector(selector);
-		} else {
-			const el = document.querySelector(selector);
-		}
+		const el = iframeSelector
+			? document.querySelector(iframeSelector).contentWindow.document.body.querySelector(selector)
+			: document.querySelector(selector);
 		if (el) {
 			let position = el ? el.getBoundingClientRect() : {};
 			const isElementBelowViewBox = viewBoxHelpers.isElementBelowViewBox(windowHeight, position.top);
